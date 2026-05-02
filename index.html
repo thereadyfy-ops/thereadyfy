@@ -6,13 +6,47 @@
     <title>The Readyfy | Creative Studio</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* ===== CURSOR FIX (embedded in case style.css is incomplete) ===== */
+        * {
+            cursor: none;
+        }
+        .cursor {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #ffffff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+        }
+        .cursor-follower {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1.5px solid rgba(255,255,255,0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.15s ease, width 0.2s, height 0.2s;
+        }
+        body:hover .cursor,
+        body:hover .cursor-follower {
+            opacity: 1;
+        }
+        /* Hide default cursor on interactive elements if needed */
+        a, button, input, select, textarea {
+            cursor: none;
+        }
+    </style>
 </head>
 <body>
-    <!-- Custom Cursor -->
+    <!-- Custom Cursor Elements -->
     <div class="cursor"></div>
     <div class="cursor-follower"></div>
 
-    <!-- Navigation -->
+    <!-- Navigation (Search & Menu button removed) -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="index.html" class="logo">The Readyfy<span>.</span></a>
@@ -24,18 +58,12 @@
                     <li><a href="news.html">News</a></li>
                     <li><a href="contact.html">Contact</a></li>
                 </ul>
-                <div class="nav-right">
-                    <a href="#" class="search-btn"><i class="fas fa-search"></i></a>
-                    <div class="menu-btn">
-                        <span></span>
-                        <span></span>
-                    </div>
-                </div>
+                <!-- Removed search-btn and menu-btn -->
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section (unchanged) -->
     <section class="hero">
         <div class="hero-bg">
             <video autoplay muted loop playsinline class="hero-video">
@@ -44,7 +72,7 @@
             <div class="overlay"></div>
         </div>
         <div class="hero-content">
-            <span class="hero-label">Since 2020</span>
+            <span class="hero-label">Since 2023</span>
             <h1 class="hero-title">
                 <span class="stroke">CREATE</span><br>
                 WITHOUT <span class="gradient">LIMITS</span>
@@ -64,7 +92,7 @@
         </div>
     </section>
 
-    <!-- Marquee Section -->
+    <!-- Marquee Section (unchanged) -->
     <div class="marquee">
         <div class="marquee-content">
             <span>✦ CREATIVE STUDIO ✦ DIGITAL EXPERIENCE ✦ BRAND STRATEGY ✦</span>
@@ -72,7 +100,7 @@
         </div>
     </div>
 
-    <!-- Featured Categories -->
+    <!-- Featured Categories (unchanged) -->
     <section class="categories">
         <div class="container">
             <div class="section-header">
@@ -155,7 +183,7 @@
         </div>
     </section>
 
-    <!-- Featured Work -->
+    <!-- Featured Work (unchanged) -->
     <section class="featured-work">
         <div class="container">
             <div class="section-header">
@@ -210,7 +238,7 @@
         </div>
     </section>
 
-    <!-- Process Section -->
+    <!-- Process Section (unchanged) -->
     <section class="process">
         <div class="container">
             <div class="section-header">
@@ -273,7 +301,7 @@
         </div>
     </section>
 
-    <!-- Stats Section -->
+    <!-- Stats Section (unchanged) -->
     <div class="stats-section">
         <div class="container">
             <div class="stats-grid">
@@ -297,7 +325,7 @@
         </div>
     </div>
 
-    <!-- Testimonials -->
+    <!-- Testimonials (unchanged) -->
     <section class="testimonials">
         <div class="container">
             <div class="section-header">
@@ -356,7 +384,7 @@
         </div>
     </section>
 
-    <!-- Latest News -->
+    <!-- Latest News (unchanged) -->
     <section class="latest-news">
         <div class="container">
             <div class="section-header">
@@ -407,7 +435,7 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
+    <!-- CTA Section (unchanged) -->
     <section class="cta-section">
         <div class="container">
             <h2 class="cta-title">
@@ -418,7 +446,7 @@
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Footer (unchanged) -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -482,6 +510,55 @@
     <!-- Back to Top -->
     <a href="#" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
 
+    <!-- External script (your existing file, may include AOS, slider, etc.) -->
     <script src="script.js"></script>
+
+    <!-- ===== CURSOR ANIMATION SCRIPT (embedded fix) ===== -->
+    <script>
+        (function() {
+            // Wait for DOM to be ready
+            document.addEventListener('DOMContentLoaded', function() {
+                var cursor = document.querySelector('.cursor');
+                var follower = document.querySelector('.cursor-follower');
+                
+                if (!cursor || !follower) return;
+                
+                var posX = 0, posY = 0;
+                var mouseX = 0, mouseY = 0;
+                
+                document.addEventListener('mousemove', function(e) {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    // Main dot follows immediately
+                    cursor.style.transform = 'translate(' + mouseX + 'px, ' + mouseY + 'px)';
+                    // Follower with slight delay (handled by animation frame)
+                });
+                
+                // Smooth follower animation
+                function animateFollower() {
+                    posX += (mouseX - posX) * 0.15;
+                    posY += (mouseY - posY) * 0.15;
+                    follower.style.transform = 'translate(' + posX + 'px, ' + posY + 'px)';
+                    requestAnimationFrame(animateFollower);
+                }
+                animateFollower();
+                
+                // Optional: scale effect on hover over clickable elements
+                var links = document.querySelectorAll('a, button, input, select, textarea, .btn');
+                links.forEach(function(link) {
+                    link.addEventListener('mouseenter', function() {
+                        follower.style.transform = 'translate(' + posX + 'px, ' + posY + 'px) scale(1.8)';
+                        follower.style.borderColor = 'rgba(255,255,255,0.8)';
+                        cursor.style.transform = 'translate(' + mouseX + 'px, ' + mouseY + 'px) scale(1.5)';
+                    });
+                    link.addEventListener('mouseleave', function() {
+                        follower.style.transform = 'translate(' + posX + 'px, ' + posY + 'px) scale(1)';
+                        follower.style.borderColor = 'rgba(255,255,255,0.5)';
+                        cursor.style.transform = 'translate(' + mouseX + 'px, ' + mouseY + 'px) scale(1)';
+                    });
+                });
+            });
+        })();
+    </script>
 </body>
 </html>
